@@ -1,11 +1,20 @@
 import * as React from 'react';
 import './datatable.scss';
-import { userColumns, userRows } from '../../data/datatablesource';
+import {
+  productColumns,
+  productRows,
+  userColumns,
+  userRows,
+} from '../../data/datatablesource';
 import { DataGrid } from '@mui/x-data-grid';
 import { Link } from 'react-router-dom';
 
-const Datatable = () => {
-  const [data, setData] = React.useState(userRows);
+type DataTableProps = {
+  tableType: string;
+};
+
+const Datatable = ({ tableType }: DataTableProps) => {
+  const [data, setData] = React.useState([]);
   const handleDelete = (id: number) => {
     setData(data.filter(item => item.id !== id));
   };
@@ -31,10 +40,18 @@ const Datatable = () => {
       },
     },
   ];
+
+  React.useEffect(() => {
+    if (tableType === 'users') {
+      setData(userRows);
+    } else {
+      setData(productRows);
+    }
+  });
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New User
+        {tableType === 'users' ? 'Add New User' : 'Add New Product'}
         <Link to="/users/new" className="link">
           Add New
         </Link>
@@ -42,7 +59,11 @@ const Datatable = () => {
       <DataGrid
         className="datagrid"
         rows={data}
-        columns={userColumns.concat(actionColumn)}
+        columns={
+          tableType === 'users'
+            ? userColumns.concat(actionColumn)
+            : productColumns.concat(actionColumn)
+        }
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection
