@@ -1,11 +1,4 @@
-type ActionColumn = {
-  field: string;
-  headerName: string;
-  width: number;
-  renderCell?: (params: any) => JSX.Element;
-}[];
-
-export const userColumns: ActionColumn = [
+export const userColumns = [
   { field: 'id', headerName: 'ID', width: 70 },
   {
     field: 'user',
